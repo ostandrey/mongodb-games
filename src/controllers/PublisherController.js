@@ -1,11 +1,11 @@
-const PlatformRepository = require('../models/repositories/PlatformRepository');
+const PublisherRepository = require('../models/repositories/PublisherRepository');
 
-class PlatformController {
+class PublisherController {
     constructor() {}
 
     create (req, res) {
-        const platform = req.body;
-        PlatformRepository.create(platform)
+        const publisher = req.body;
+        PublisherRepository.create(publisher)
             .then(
                 data => { res.status(200).json(data) }
             )
@@ -15,15 +15,14 @@ class PlatformController {
     }
 
     getAll (req, res) {
-        PlatformRepository.getAll()
+        PublisherRepository.getAll()
             .then(
                 data => { res.status(200).json(data) }
             )
             .catch(
-                error => { res.status(error.status).json(error) }
+                error => { res.status(error.status).json(error)}
             )
     }
-
 }
 
-module.exports = new PlatformController();
+module.exports = new PublisherController();
