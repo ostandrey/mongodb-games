@@ -25,6 +25,31 @@ class GenresController {
                 error => {res.status(error.status).json(error)}
             )
     }
+
+    getOne (req, res) {
+        GenreRepository.getOne(req.params.id)
+            .then(
+                data => {
+                    res.status(200).json(data)
+                }
+            )
+            .catch(
+                error => {res.status(error.status).json(error)}
+            )
+    }
+
+    delete (req, res) {
+        GenreRepository.getOne(req.params.id)
+            .then(
+                data => {
+                    res.status(200).json(data)
+                }
+            )
+            .catch(
+                error => {res.status(error.status).json(error)}
+            )
+    }
+
 }
 
 module.exports = new GenresController();

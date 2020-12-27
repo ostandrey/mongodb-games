@@ -12,6 +12,14 @@ class GenreRepository {
     getAll() {
         return this.model.find()
     }
+
+    getOne(id) {
+        return this.model.findById(id)
+    }
+
+    delete() {
+        return this.model.findByIdAndDelete()
+    }
 }
 
 module.exports = new GenreRepository(Genre);

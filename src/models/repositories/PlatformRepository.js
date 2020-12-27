@@ -12,6 +12,10 @@ class PlatformRepository {
     getAll(){
         return this.model.find()
     }
+
+    getOne(id) {
+        return this.model.findById(id)
+    }
 }
 
 module.exports = new PlatformRepository(Platform);

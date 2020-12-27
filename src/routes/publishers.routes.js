@@ -5,5 +5,6 @@ const router = express.Router();
 
 router.post('/', PublisherController.create);
 router.get('/', PublisherController.getAll);
+router.get('/:id', PublisherController.getOne);
 
 module.exports = router;
