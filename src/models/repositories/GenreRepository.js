@@ -17,8 +17,8 @@ class GenreRepository {
         return this.model.findById(id)
     }
 
-    delete() {
-        return this.model.findByIdAndDelete()
+    delete(id) {
+        return this.model.findByIdAndDelete(id)
     }
 }
 

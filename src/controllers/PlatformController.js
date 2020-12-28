@@ -37,6 +37,14 @@ class PlatformController {
             )
     }
 
+
+    delete (req, res) {
+        PlatformRepository.delete(req.params.id)
+            .then( res.redirect('/') )
+            .catch(
+                error => {res.status(error.status).json(error)}
+            )
+    }
 }
 
 module.exports = new PlatformController();

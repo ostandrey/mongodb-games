@@ -16,6 +16,10 @@ class PublisherRepository {
     getOne(id) {
         return this.model.findById(id)
     }
+
+    delete(id) {
+        return this.model.findByIdAndDelete(id)
+    }
 }
 
 module.exports = new PublisherRepository(Publisher);
