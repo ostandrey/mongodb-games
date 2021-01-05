@@ -15,6 +15,8 @@ class GameRepository {
 
     getOne(id) {
         return this.model.findById(id)
+            .populate('platform')
+            .exec()
     }
 
     delete(id) {

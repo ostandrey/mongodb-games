@@ -3,20 +3,21 @@ const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
 const schema = new Schema ({
-    title: {
-        type: String
-    },
+    title: String,
     short_description: {
         type: String
     },
     genre: {
-        type: String
+        type: Schema.Types.ObjectId,
+        ref: 'Genre'
     },
     platform: {
-        type: String
+        type: Schema.Types.ObjectId,
+        ref: 'platform'
     },
     publisher: {
-        type: String
+        type: Schema.Types.ObjectId,
+        ref: 'Publisher'
     },
     release_date: {
         type: String

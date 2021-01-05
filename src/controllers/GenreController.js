@@ -40,12 +40,22 @@ class GenresController {
 
     delete (req, res) {
         GenreRepository.delete(req.params.id)
-            .then( res.redirect('/') )
+            .then( res.status(200) )
             .catch(
                 error => {res.status(error.status).json(error)}
             )
     }
 
+    update (req, res) {
+        const genre = req.body;
+        GenreRepository.update(req.params.id, genre)
+            .then(
+                data => { res.status(200).json(data) }
+            )
+            .catch(
+                error => { res.status(error.status).json(error) }
+            )
+    }
 }
 
 module.exports = new GenresController();
