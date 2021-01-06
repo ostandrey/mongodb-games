@@ -27,20 +27,29 @@ class PublisherController {
     getOne (req, res) {
         PublisherRepository.getOne(req.params.id)
             .then(
-                data => {
-                    res.status(200).json(data)
-                }
+                data => { res.status(200).json(data) }
             )
             .catch(
-                error => {res.status(error.status).json(error)}
+                error => { res.status(error.status).json(error) }
             )
     }
 
     delete (req, res) {
         PublisherRepository.delete(req.params.id)
-            .then( res.redirect('/') )
+            .then( res.status(200) )
             .catch(
-                error => {res.status(error.status).json(error)}
+                error => { res.status(error.status).json(error) }
+            )
+    }
+
+    update (req, res) {
+        const publisher = req.body;
+        PublisherRepository.update(req.params.id, publisher)
+            .then(
+                data => { res.status(200).json(data) }
+            )
+            .catch(
+                error => { res.status(error.status).json(error) }
             )
     }
 }

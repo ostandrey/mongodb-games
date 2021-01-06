@@ -19,6 +19,11 @@ class GameRepository {
             .exec()
     }
 
+    update(id, object) {
+        return this.model.findOneAndUpdate(id, object, {new: true})
+    }
+
+
     delete(id) {
         return this.model.findByIdAndDelete(id)
     }
