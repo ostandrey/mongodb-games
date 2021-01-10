@@ -1,6 +1,8 @@
 const http = require('https');
+const PlatformRepository = require('../models/repositories/PlatformRepository');
 
 class DataController {
+
     constructor(){}
 
     getAll (req, res) {
@@ -16,20 +18,30 @@ class DataController {
                 const platforms = [];
                 const publishers = [];
                 const games = [];
-                for (let key in body) {
-                    genres[key] = body[key]['genre'];
-                    platforms[key] = body[key]['platform'];
-                    publishers[key] = body[key]['publisher'];
-                    games[key] = body[key]['title']
-                        // , 'short_description', 'release_date'];
-                    // console.log(body[key]['genre'])
+                for (let game of body) {
+                    addUniqueValue(game['genre'], genres);
+                    addUniqueValue(game['platform'], platforms);
+                    addUniqueValue(game['publisher'], publishers);
+
+                    delete game['id'];
+                    delete game['thumbnail'];
+                    delete game['game_url'];
+                    delete game['developer'];
+                    delete game['freetogame_profile_url'];
+                    games.push(game);
                 }
-                let uniqueGenres = [...new Set(genres)];
-                let uniquePlatforms = [...new Set(platforms)];
-                let uniquePublishers = [...new Set(publishers)];
-                let uniqueGames = [...new Set(games)];
-                console.log(uniqueGames);
-                return
+                PlatformRepository.insert(platforms)
+                    .then(_ => {'successfully saved'})
+                    .catch(error => {throw new Error(error)});
+
+                for (let game of games) {
+                    PlatformRepository.findByTitle(game.platform)
+                        .then(platform => {
+                            console.log(platform.id);
+                            game.platform = platform.id;
+                        })
+                        .catch(error => {throw new Error(error)})
+                }
             });
             res.on('error', (error) => {
                 console.log(error)
@@ -37,5 +49,12 @@ class DataController {
         });
     }
 }
+
+const addUniqueValue = (value, array) => {
+    const existingValue = array.find((item) => item.title === value);
+    if (!existingValue) {
+        array.push({title: value});
+    }
+};
 
 module.exports = new DataController();

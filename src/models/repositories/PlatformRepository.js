@@ -17,8 +17,16 @@ class PlatformRepository {
         return this.model.findById(id)
     }
 
+    findByTitle(title) {
+        return this.model.findOne({title: title})
+    }
+
     update(id, object) {
         return this.model.findOneAndUpdate(id, object, {new: true})
+    }
+
+    insert(platformsArray) {
+        return this.model.insertMany(platformsArray)
     }
 
 
