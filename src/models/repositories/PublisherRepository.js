@@ -21,6 +21,9 @@ class PublisherRepository {
         return this.model.findOneAndUpdate(id, object, {new: true})
     }
 
+    insert(publishersArray) {
+        return this.model.insertMany(publishersArray)
+    }
 
     delete(id) {
         return this.model.findByIdAndDelete(id)

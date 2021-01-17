@@ -8,5 +8,5 @@ const schema = new Schema ({
     }
 });
 
-const Platform = mongoose.model('platforms', schema);
+const Platform = mongoose.model('Platform', schema);
 module.exports = Platform;

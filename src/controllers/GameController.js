@@ -15,7 +15,7 @@ class GameController {
     }
 
     getAll (req, res) {
-        GameRepository.getAll()
+        GameRepository.getAll(req.params)
             .then (
                 data => { res.status(200).json(data) }
             )

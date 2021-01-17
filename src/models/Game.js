@@ -13,7 +13,7 @@ const schema = new Schema ({
     },
     platform: {
         type: Schema.Types.ObjectId,
-        ref: 'platform'
+        ref: 'Platform'
     },
     publisher: {
         type: Schema.Types.ObjectId,

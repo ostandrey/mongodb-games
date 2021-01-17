@@ -1,5 +1,8 @@
 const http = require('https');
 const PlatformRepository = require('../models/repositories/PlatformRepository');
+const GenreRepository = require('../models/repositories/GenreRepository');
+const PublisherRepository = require('../models/repositories/PublisherRepository');
+const GameRepository = require('../models/repositories/GameRepository');
 
 class DataController {
 
@@ -19,9 +22,9 @@ class DataController {
                 const publishers = [];
                 const games = [];
                 for (let game of body) {
-                    addUniqueValue(game['genre'], genres);
-                    addUniqueValue(game['platform'], platforms);
-                    addUniqueValue(game['publisher'], publishers);
+                    DataController.addUniqueValue(game['genre'], genres);
+                    DataController.addUniqueValue(game['platform'], platforms);
+                    DataController.addUniqueValue(game['publisher'], publishers);
 
                     delete game['id'];
                     delete game['thumbnail'];
@@ -30,31 +33,87 @@ class DataController {
                     delete game['freetogame_profile_url'];
                     games.push(game);
                 }
-                PlatformRepository.insert(platforms)
-                    .then(_ => {'successfully saved'})
-                    .catch(error => {throw new Error(error)});
+                Promise.all([
+                    DataController.fillPlatformsCollection(platforms),
+                    DataController.fillGenresCollection(genres),
+                    DataController.fillPublishersCollection(publishers),
+                ])
+                    .then(
+                        onfulfilled => {
+                            for (let game of games) {
+                                const platformsSaved = onfulfilled[0];
+                                const genresSaved = onfulfilled[1];
+                                const publishersSaved = onfulfilled[2];
 
-                for (let game of games) {
-                    PlatformRepository.findByTitle(game.platform)
-                        .then(platform => {
-                            console.log(platform.id);
-                            game.platform = platform.id;
-                        })
-                        .catch(error => {throw new Error(error)})
-                }
+                                const platform = platformsSaved.find(item => item.title === game.platform);
+                                game.platform = platform.id;
+                                const genre = genresSaved.find(item => item.title === game.genre);
+                                game.genre = genre.id;
+                                const publisher = publishersSaved.find(item => item.title === game.publisher);
+                                game.publisher = publisher.id;
+                            }
+                            DataController.fillGamesCollection(games)
+
+                        },
+                        onrejected => { console.log('rejected') }
+                    )
             });
             res.on('error', (error) => {
                 console.log(error)
             })
         });
     }
-}
 
-const addUniqueValue = (value, array) => {
-    const existingValue = array.find((item) => item.title === value);
-    if (!existingValue) {
-        array.push({title: value});
+    static fillPlatformsCollection(platforms) {
+        return PlatformRepository.insert(platforms)
+            .then(
+                data => data,
+                onerror => {
+                    throw new Error(onerror)
+                }
+            )
+            .catch(error => {throw new Error(error)})
     }
-};
+
+    static fillGenresCollection(genres) {
+        return GenreRepository.insert(genres)
+            .then(
+                data => data,
+                onerror => {
+                    throw new Error(onerror)
+                }
+            )
+            .catch(error => {throw new Error(error)})
+    }
+
+    static fillPublishersCollection(publishers) {
+        return PublisherRepository.insert(publishers)
+            .then(
+                data => data,
+                onerror => {
+                    throw new Error(onerror)
+                }
+            )
+            .catch(error => {throw new Error(error)})
+    }
+
+    static fillGamesCollection(games) {
+        return GameRepository.insert(games)
+            .then(
+                data => data,
+                onerror => {
+                    throw new Error(onerror)
+                }
+            )
+            .catch(error => {throw new Error(error)})
+    }
+
+    static addUniqueValue(value, array) {
+        const existingValue = array.find((item) => item.title === value);
+        if (!existingValue) {
+            array.push({title: value});
+        }
+    }
+}
 
 module.exports = new DataController();

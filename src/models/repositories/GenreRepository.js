@@ -21,6 +21,10 @@ class GenreRepository {
         return this.model.findOneAndUpdate(id, object, {new: true})
     }
 
+    insert(genresArray) {
+        return this.model.insertMany(genresArray)
+    }
+
     delete(id) {
         return this.model.findByIdAndDelete(id)
     }
