@@ -15,7 +15,7 @@ class GenresController {
     }
 
     getAll (req, res) {
-        GenreRepository.getAll()
+        GenreRepository.getAll(req)
             .then(
                 data => { res.status(200).json(data) }
             )

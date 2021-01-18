@@ -9,12 +9,9 @@ class GameRepository {
         return this.model.create(object);
     }
 
-    getAll(params) {
-        const queryParams = {};
-        if (params.title) {
-            queryParams.title = params.title
-        }
-        return this.model.find(queryParams)
+    getAll(request) {
+        const searchString = request.query.title ? request.query.title : '.';
+        return this.model.find({title: {$regex: `${searchString}`, $options: 'i'}})
             .populate('genre')
             .populate('platform')
             .populate('publisher')

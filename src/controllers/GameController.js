@@ -15,13 +15,14 @@ class GameController {
     }
 
     getAll (req, res) {
-        GameRepository.getAll(req.params)
+        GameRepository.getAll(req)
             .then (
                 data => { res.status(200).json(data) }
             )
             .catch(
                 error => { res.status(error.status).json(error) }
             )
+
     }
 
     getOne (req, res) {

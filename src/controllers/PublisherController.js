@@ -15,7 +15,7 @@ class PublisherController {
     }
 
     getAll (req, res) {
-        PublisherRepository.getAll()
+        PublisherRepository.getAll(req)
             .then(
                 data => { res.status(200).json(data) }
             )

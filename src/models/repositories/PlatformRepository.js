@@ -9,8 +9,9 @@ class PlatformRepository {
         return this.model.create(object)
     }
 
-    getAll(){
-        return this.model.find()
+    getAll(request){
+        const searchString = request.query.title ? request.query.title : '.';
+        return this.model.find({title: {$regex: `${searchString}`, $options: 'i'}})
     }
 
     getOne(id) {

@@ -15,7 +15,7 @@ class PlatformController {
     }
 
     getAll (req, res) {
-        PlatformRepository.getAll()
+        PlatformRepository.getAll(req)
             .then(
                 data => { res.status(200).json(data) }
             )
