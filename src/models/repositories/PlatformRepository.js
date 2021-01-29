@@ -11,7 +11,11 @@ class PlatformRepository {
 
     getAll(request){
         const searchString = request.query.title ? request.query.title : '.';
-        return this.model.find({title: {$regex: `${searchString}`, $options: 'i'}})
+        const orderBy = request.query.sort === 'ascending' ? 1 :
+            request.query.sort === 'descending' ? -1 : '';
+        return this.model
+            .find({title: {$regex: `${searchString}`, $options: 'i'}})
+            .sort({title: `${orderBy}`})
     }
 
     getOne(id) {
